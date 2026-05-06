@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie souvenirs - 18 ans</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;800;900&display=swap');
+
+        :root {
+            --pink: #ff4fa3;
+            --purple: #7c3cff;
+            --yellow: #ffd166;
+            --dark: #160d20;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at 15% 10%, rgba(255, 79, 163, .22), transparent 32%),
+            radial-gradient(circle at 85% 0%, rgba(124, 60, 255, .22), transparent 34%),
+            #160d20;
+            font-family: Inter, sans-serif;
+            color: white;
+        }
+
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .photo-card {
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .14);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 70px rgba(0, 0, 0, .25);
+        }
+
+        .photo-card img {
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            display: block;
+        }
+
+        .filter-btn.is-active {
+            background: white;
+            color: #160d20;
+        }
+
+        .modal {
+            display: none;
+        }
+
+        .modal.is-open {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+<main class="min-h-screen px-5 py-8 md:px-10">
+
+    <header class="max-w-7xl mx-auto mb-10">
+        <a href="index.html" class="inline-flex mb-8 text-white/70 hover:text-white font-bold">
+            ← Retour au montage
+        </a>
+
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div>
+                <p class="uppercase tracking-[.35em] text-xs font-black text-white/50 mb-4">
+                    Souvenirs
+                </p>
+                <h1 class="font-display text-5xl md:text-7xl font-extrabold leading-none">
+                    Toutes les photos
+                </h1>
+                <p class="mt-5 max-w-2xl text-white/70 text-lg">
+                    Retrouve ici toutes les photos du montage, avec possibilité de les voir en grand et de les
+                    télécharger.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+                <button id="downloadAllBtn" class="rounded-full bg-white text-[#160d20] px-5 py-3 font-black">
+                    Télécharger tout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="max-w-7xl mx-auto sticky top-0 z-20 py-4 backdrop-blur-xl bg-[#160d20]/70">
+        <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+            <div id="filters" class="flex flex-wrap gap-2"></div>
+
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto mt-8">
+        <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"></div>
+    </section>
+
+</main>
+
+<div id="photoModal" class="modal fixed inset-0 z-50 items-center justify-center bg-black/80 p-5">
+    <button id="closeModal" class="absolute top-5 right-5 rounded-full bg-white text-black px-5 py-3 font-black">
+        Fermer
+    </button>
+
+    <div class="max-w-5xl w-full">
+        <img id="modalImg" src="" alt="" class="max-h-[78vh] mx-auto rounded-3xl object-contain">
+        <div class="mt-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <p id="modalChapter" class="text-white/50 text-sm uppercase tracking-[.25em] font-black"></p>
+                <h2 id="modalTitle" class="text-2xl font-black"></h2>
+            </div>
+            <a id="modalDownload" href="#" download
+               class="rounded-full bg-white text-[#160d20] px-5 py-3 font-black text-center">
+                Télécharger cette photo
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const chapters = [
+        {
+            title: 'Les premiers sourires',
+            photos: [
+                {
+                    src: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=1600&auto=format&fit=crop',
+                    label: 'Premier sourire'
+                },
+                {
+                    src: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=1600&auto=format&fit=crop',
+                    label: 'Mini star'
+                },
+                {
+                    src: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?q=80&w=1600&auto=format&fit=crop',
+                    label: 'Déjà curieuse'
+                }
+            ]
+        },
+        {
+            title: 'Les bêtises',
+            photos: [
+                {
+                    src: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=1600&auto=format&fit=crop',
+                    label: 'Fou rire'
+                },
+                {
+                    src: 'https://images.unsplash.com/photo-1542385151-efd9000785a0?q=80&w=1600&auto=format&fit=crop',
+                    label: 'Grimace validée'
+                }
+            ]
+        },
+        {
+            title: 'La famille',
+            photos: [
+                {
+                    src: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=1600&auto=format&fit=crop',
+                    label: 'Tous ensemble'
+                }
+            ]
+        },
+        {
+            title: 'Aujourd’hui',
+            photos: [
+                {
+                    src: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1600&auto=format&fit=crop',
+                    label: '18 ans'
+                }
+            ]
+        }
+    ];
+
+    const gallery = document.querySelector('#gallery');
+    const filters = document.querySelector('#filters');
+    const modal = document.querySelector('#photoModal');
+    const modalImg = document.querySelector('#modalImg');
+    const modalTitle = document.querySelector('#modalTitle');
+    const modalChapter = document.querySelector('#modalChapter');
+    const modalDownload = document.querySelector('#modalDownload');
+    const closeModal = document.querySelector('#closeModal');
+    const downloadAllBtn = document.querySelector('#downloadAllBtn');
+
+    let currentFilter = 'all';
+
+    const allPhotos = chapters.flatMap((chapter, chapterIndex) => {
+        return chapter.photos.map((photo, photoIndex) => ({
+            ...photo,
+            chapter: chapter.title,
+            chapterIndex,
+            index: photoIndex
+        }));
+    });
+
+    function slugify(text) {
+        return text
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '');
+    }
+
+    async function downloadImage(url, filename) {
+        try {
+            const response = await fetch(url, {mode: 'cors'});
+
+            if (!response.ok) {
+                throw new Error('Image inaccessible');
+            }
+
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+
+            a.remove();
+            URL.revokeObjectURL(blobUrl);
+        } catch (e) {
+            console.error(e);
+            alert("Impossible de télécharger cette image. Avec Unsplash, c’est parfois bloqué. Avec tes photos locales, ça marchera.");
+        }
+    }
+
+    function createFilters() {
+        const buttons = [
+            {label: 'Toutes', value: 'all'},
+            ...chapters.map((chapter, index) => ({
+                label: chapter.title,
+                value: String(index)
+            }))
+        ];
+
+        filters.innerHTML = buttons.map(btn => `
+            <button
+                class="filter-btn ${btn.value === 'all' ? 'is-active' : ''} rounded-full bg-white/10 border border-white/15 px-4 py-2 text-sm font-black text-white"
+                data-filter="${btn.value}"
+            >
+                ${btn.label}
+            </button>
+        `).join('');
+
+        filters.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                currentFilter = button.dataset.filter;
+
+                filters.querySelectorAll('button').forEach(btn => btn.classList.remove('is-active'));
+                button.classList.add('is-active');
+
+                renderGallery();
+            });
+        });
+    }
+
+    function renderGallery() {
+        const photos = allPhotos.filter(photo => {
+            return currentFilter === 'all' || String(photo.chapterIndex) === currentFilter;
+        });
+
+        gallery.innerHTML = photos.map(photo => {
+            const realIndex = allPhotos.indexOf(photo);
+
+            return `
+                <article class="photo-card group">
+                    <button class="open-photo block w-full text-left" data-index="${realIndex}">
+                        <img src="${photo.src}" alt="${photo.label}" loading="lazy">
+                    </button>
+
+                    <div class="p-4">
+                        <p class="text-xs uppercase tracking-[.22em] text-white/40 font-black mb-2">
+                            ${photo.chapter}
+                        </p>
+
+                        <h2 class="font-black leading-tight">${photo.label}</h2>
+
+                        <div class="mt-4 flex gap-2">
+                            <button
+                                class="open-photo flex-1 rounded-full bg-white/10 px-3 py-2 text-sm font-black"
+                                data-index="${realIndex}"
+                            >
+                                Voir
+                            </button>
+
+                            <button
+                                class="download-one rounded-full bg-white text-[#160d20] px-3 py-2 text-sm font-black"
+                                data-index="${realIndex}"
+                            >
+                                ↓
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }).join('');
+
+        bindGalleryButtons();
+    }
+
+    function bindGalleryButtons() {
+        gallery.querySelectorAll('.open-photo').forEach(btn => {
+            btn.addEventListener('click', () => {
+                openPhoto(Number(btn.dataset.index));
+            });
+        });
+
+        gallery.querySelectorAll('.download-one').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+
+                const photo = allPhotos[Number(btn.dataset.index)];
+                downloadImage(photo.src, `${slugify(photo.label)}.jpg`);
+            });
+        });
+    }
+
+    function openPhoto(index) {
+        const photo = allPhotos[index];
+
+        modalImg.src = photo.src;
+        modalImg.alt = photo.label;
+        modalTitle.textContent = photo.label;
+        modalChapter.textContent = photo.chapter;
+
+        modalDownload.onclick = e => {
+            e.preventDefault();
+            downloadImage(photo.src, `${slugify(photo.label)}.jpg`);
+        };
+
+        modal.classList.add('is-open');
+    }
+
+    function closePhotoModal() {
+        modal.classList.remove('is-open');
+        modalImg.src = '';
+    }
+
+    closeModal.addEventListener('click', closePhotoModal);
+
+    modal.addEventListener('click', e => {
+        if (e.target === modal) closePhotoModal();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closePhotoModal();
+    });
+
+    downloadAllBtn.addEventListener('click', async () => {
+        if (typeof JSZip === 'undefined') {
+            alert('JSZip ne semble pas chargé.');
+            return;
+        }
+
+        downloadAllBtn.disabled = true;
+        downloadAllBtn.textContent = 'Préparation...';
+
+        const zip = new JSZip();
+        const folder = zip.folder('souvenirs-18-ans');
+
+        let count = 0;
+
+        for (const photo of allPhotos) {
+            try {
+                const response = await fetch(photo.src, {mode: 'cors'});
+
+                if (!response.ok) {
+                    throw new Error('Image inaccessible');
+                }
+
+                const blob = await response.blob();
+                const fileName = `${String(count + 1).padStart(2, '0')}-${slugify(photo.label)}.jpg`;
+
+                folder.file(fileName, blob);
+                count++;
+            } catch (e) {
+                console.warn('Image ignorée :', photo.src);
+            }
+        }
+
+        if (count === 0) {
+            alert("Aucune image n’a pu être ajoutée au ZIP.");
+            downloadAllBtn.disabled = false;
+            downloadAllBtn.textContent = 'Télécharger tout';
+            return;
+        }
+
+        const content = await zip.generateAsync({type: 'blob'});
+        const zipUrl = URL.createObjectURL(content);
+
+        const a = document.createElement('a');
+        a.href = zipUrl;
+        a.download = 'photos-18-ans.zip';
+        document.body.appendChild(a);
+        a.click();
+
+        a.remove();
+        URL.revokeObjectURL(zipUrl);
+
+        downloadAllBtn.disabled = false;
+        downloadAllBtn.textContent = 'Télécharger tout';
+    });
+
+    createFilters();
+    renderGallery();
+</script>
+
+
+</body>
+</html>
