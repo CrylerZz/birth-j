@@ -1,0 +1,389 @@
+window.CHAPTERS = [
+  {
+    "title": "Grossesse",
+    "subtitle": "Le tout début de l’histoire",
+    "photos": [
+      "photos/grossesse/IMGP0045.JPG",
+      "photos/grossesse/IMGP0119.JPG",
+      "photos/grossesse/IMGP0123.JPG",
+      "photos/grossesse/IMGP0126.JPG",
+      "photos/grossesse/IMGP0137.JPG",
+      "photos/grossesse/IMGP0154.JPG",
+      "photos/grossesse/IMGP0161.JPG",
+      "photos/grossesse/IMGP0171.JPG",
+      "photos/grossesse/IMGP0229.JPG",
+      "photos/grossesse/IMGP0244.JPG",
+      "photos/grossesse/IMGP0248.JPG",
+      "photos/grossesse/IMGP0299.JPG",
+      "photos/grossesse/IMGP0340.JPG",
+      "photos/grossesse/IMGP0362.JPG",
+      "photos/grossesse/IMGP0407.JPG",
+      "photos/grossesse/IMGP0466.JPG",
+      "photos/grossesse/IMGP0487.JPG",
+      "photos/grossesse/IMGP0514.JPG",
+      "photos/grossesse/IMGP0621.JPG",
+      "photos/grossesse/IMGP0687.JPG",
+      "photos/grossesse/IMGP0694.JPG",
+      "photos/grossesse/julia 2 018.jpg",
+      "photos/grossesse/julia 2 066.jpg",
+      "photos/grossesse/julia 2 089.jpg",
+      "photos/grossesse/julia 2 116.jpg",
+      "photos/grossesse/julia 2 145.jpg",
+      "photos/grossesse/julia 2 180.jpg",
+      "photos/grossesse/julia 2 211.jpg",
+      "photos/grossesse/julia 2 217.jpg",
+      "photos/grossesse/julia 2 219.jpg",
+      "photos/grossesse/julia fevrier 001.jpg",
+      "photos/grossesse/julia fevrier 006.jpg",
+      "photos/grossesse/julia fevrier 014.jpg",
+      "photos/grossesse/julia fevrier 024.jpg",
+      "photos/grossesse/julia mars 034.jpg",
+      "photos/grossesse/julia mars 087.jpg",
+      "photos/grossesse/niherne julia 008.jpg",
+      "photos/grossesse/niherne julia 032.jpg"
+    ]
+  },
+  {
+    "title": "1 an",
+    "subtitle": "Souvenirs de ses 1 an",
+    "photos": [
+      "photos/1 an/julia 2 052.jpg",
+      "photos/1 an/julia mars 106.jpg",
+      "photos/1 an/julia mars 113.jpg"
+    ]
+  },
+  {
+    "title": "2 ans",
+    "subtitle": "Souvenirs de ses 2 ans",
+    "photos": [
+      "photos/2 ans/1000020472.jpg",
+      "photos/2 ans/1000020474.jpg",
+      "photos/2 ans/avril2010nathanjulia 069.jpg",
+      "photos/2 ans/avril2010nathanjulia 078.jpg",
+      "photos/2 ans/avril2010nathanjulia 114.jpg",
+      "photos/2 ans/decembre2010 036.jpg",
+      "photos/2 ans/decembre2010 044.jpg",
+      "photos/2 ans/IMGP1763.JPG",
+      "photos/2 ans/IMGP1785.JPG",
+      "photos/2 ans/IMGP1845.JPG",
+      "photos/2 ans/IMGP1885.JPG",
+      "photos/2 ans/IMGP1936.JPG",
+      "photos/2 ans/IMGP1955.JPG",
+      "photos/2 ans/IMGP1996.JPG",
+      "photos/2 ans/IMGP2019.JPG",
+      "photos/2 ans/janvier 2010 nathan 012.jpg",
+      "photos/2 ans/janvier 2010 nathan 017.jpg",
+      "photos/2 ans/julia 2 205.jpg"
+    ]
+  },
+  {
+    "title": "3 ans",
+    "subtitle": "Souvenirs de ses 3 ans",
+    "photos": [
+      "photos/3 ans/avril2011 026.jpg",
+      "photos/3 ans/IMGP1750.JPG",
+      "photos/3 ans/IMGP1848.JPG",
+      "photos/3 ans/IMGP1872.JPG",
+      "photos/3 ans/IMGP1921.JPG",
+      "photos/3 ans/janvier2011 026.jpg",
+      "photos/3 ans/mars2011 010.jpg",
+      "photos/3 ans/septembre 2011 084.jpg"
+    ]
+  },
+  {
+    "title": "4 ans",
+    "subtitle": "Souvenirs de ses 4 ans",
+    "photos": [
+      "photos/4 ans/anniversaire julia 4 ans 003.jpg",
+      "photos/4 ans/decembre 2012 088.jpg",
+      "photos/4 ans/fevrier 2012 009.jpg"
+    ]
+  },
+  {
+    "title": "5 ans",
+    "subtitle": "Souvenirs de ses 5 ans",
+    "photos": [
+      "photos/5 ans/IMGP4079.JPG",
+      "photos/5 ans/P1040157.JPG",
+      "photos/5 ans/P2250087.JPG",
+      "photos/5 ans/P4060126.JPG",
+      "photos/5 ans/P4060152.JPG",
+      "photos/5 ans/P7100034.JPG",
+      "photos/5 ans/P8140190.JPG",
+      "photos/5 ans/P9210193.JPG",
+      "photos/5 ans/PA260024.JPG"
+    ]
+  },
+  {
+    "title": "6 ans",
+    "subtitle": "Souvenirs de ses 6 ans",
+    "photos": [
+      "photos/6 ans/P1050158.JPG",
+      "photos/6 ans/P1050162.JPG",
+      "photos/6 ans/P4060097.JPG",
+      "photos/6 ans/P4060117.JPG"
+    ]
+  },
+  {
+    "title": "7 ans",
+    "subtitle": "Souvenirs de ses 7 ans",
+    "photos": [
+      "photos/7 ans/20150502_142509.jpg",
+      "photos/7 ans/P5020062.JPG",
+      "photos/7 ans/P6110036.JPG",
+      "photos/7 ans/P8140185.JPG"
+    ]
+  },
+  {
+    "title": "8 ans",
+    "subtitle": "Souvenirs de ses 8 ans",
+    "photos": [
+      "photos/8 ans/20160305_201254.jpg",
+      "photos/8 ans/20160504_181947.jpg",
+      "photos/8 ans/RJQE1989.JPEG",
+      "photos/8 ans/Screenshot_20211105_205423_com.android.gallery3d.jpg",
+      "photos/8 ans/Screenshot_20211105_205524_com.android.gallery3d.jpg",
+      "photos/8 ans/UTTY0161.JPEG"
+    ]
+  },
+  {
+    "title": "9 ans",
+    "subtitle": "Souvenirs de ses 9 ans",
+    "photos": [
+      "photos/9 ans/20170408_215140.jpg",
+      "photos/9 ans/PHOTO-2026-05-24-19-26-33.jpg",
+      "photos/9 ans/PHOTO-2026-05-24-19-26-33[1].jpg",
+      "photos/9 ans/PHOTO-2026-05-25-11-06-49[1].jpg"
+    ]
+  },
+  {
+    "title": "10 ans",
+    "subtitle": "Souvenirs de ses 10 ans",
+    "photos": [
+      "photos/10 ans/IMG_20180408_124705.jpg",
+      "photos/10 ans/PHOTO-2026-05-25-11-06-50.jpg",
+      "photos/10 ans/PHOTO-2026-05-25-11-06-50[1].jpg",
+      "photos/10 ans/PHOTO-2026-05-25-11-06-50[2].jpg",
+      "photos/10 ans/PHOTO-2026-05-25-11-06-50[3].jpg",
+      "photos/10 ans/PHOTO-2026-05-25-11-06-50[4].jpg",
+      "photos/10 ans/PHOTO-2026-05-25-11-06-50[5].jpg",
+      "photos/10 ans/PHOTO-2026-05-25-11-06-50[6].jpg",
+      "photos/10 ans/Snapchat-1165834759.jpg"
+    ]
+  },
+  {
+    "title": "11 ans",
+    "subtitle": "Souvenirs de ses 11 ans",
+    "photos": [
+      "photos/11 ans/1000027333.jpg",
+      "photos/11 ans/IMG_20190407_144825.jpg",
+      "photos/11 ans/IMG_20190427_135017.jpg",
+      "photos/11 ans/IMG_20190515_174641.jpg",
+      "photos/11 ans/IMG_20190731_151323.jpg",
+      "photos/11 ans/IMG_20190821_180533.jpg",
+      "photos/11 ans/PART_1580054917852.jpg"
+    ]
+  },
+  {
+    "title": "12 ans",
+    "subtitle": "Souvenirs de ses 12 ans",
+    "photos": [
+      "photos/12 ans/CULS5955.JPEG",
+      "photos/12 ans/GHOM6245.JPEG",
+      "photos/12 ans/HAOW6652.JPEG",
+      "photos/12 ans/IMG_20200105_160219.jpg",
+      "photos/12 ans/IMG_20200226_201014.jpg",
+      "photos/12 ans/IMG_20200406_192142.jpg",
+      "photos/12 ans/IMG_20200725_175341.jpg",
+      "photos/12 ans/IMG_20200731_124835.jpg",
+      "photos/12 ans/PicsArt_07-03-07.29.09.jpg",
+      "photos/12 ans/QJIL5531.JPEG",
+      "photos/12 ans/SDKL5043.JPEG"
+    ]
+  },
+  {
+    "title": "13 ans",
+    "subtitle": "Souvenirs de ses 13 ans",
+    "photos": [
+      "photos/13 ans/GSJV4363.JPEG",
+      "photos/13 ans/HHXH7584.JPEG",
+      "photos/13 ans/HXAE2381.JPEG",
+      "photos/13 ans/ILWW2823.JPEG",
+      "photos/13 ans/IMG_20210118_191528.jpg",
+      "photos/13 ans/IMG_20210224_154241.jpg",
+      "photos/13 ans/IMG_20210225_155825.jpg",
+      "photos/13 ans/IMG_20210417_205853.jpg",
+      "photos/13 ans/IMG_20210709_151308.jpg",
+      "photos/13 ans/IMG_20221224_195403.jpg",
+      "photos/13 ans/IMG_20221230_190133.jpg",
+      "photos/13 ans/KYAF6475.JPEG",
+      "photos/13 ans/MTDO9285.JPEG",
+      "photos/13 ans/SYME9852.JPEG"
+    ]
+  },
+  {
+    "title": "14 ans",
+    "subtitle": "Souvenirs de ses 14 ans",
+    "photos": [
+      "photos/14 ans/IMG-20240412-WA0001.jpg",
+      "photos/14 ans/YKVW6157.JPEG"
+    ]
+  },
+  {
+    "title": "15 ans",
+    "subtitle": "Souvenirs de ses 15 ans",
+    "photos": [
+      "photos/15 ans/Capture.PNG",
+      "photos/15 ans/DQUW9660.WEBP",
+      "photos/15 ans/IAKL6356.JPEG",
+      "photos/15 ans/IMG_6836.JPG",
+      "photos/15 ans/IMG_20230725_125741.jpg",
+      "photos/15 ans/IMG-20231022-WA0010.jpg",
+      "photos/15 ans/PART_1633982288837_PART_1565365290451.jpeg",
+      "photos/15 ans/PART_1634381515539_PART_1569780601403.jpg",
+      "photos/15 ans/PART_1634381520261_PART_1568553382882.jpg",
+      "photos/15 ans/PART_1634381524661_PART_1567955623916.jpg",
+      "photos/15 ans/QDRU8140.JPEG"
+    ]
+  },
+  {
+    "title": "16 ans",
+    "subtitle": "Souvenirs de ses 16 ans",
+    "photos": [
+      "photos/16 ans/20240605_120610.jpg",
+      "photos/16 ans/1000027291.jpg",
+      "photos/16 ans/IMG_20240722_130630.jpg",
+      "photos/16 ans/IMG-20250903-WA0806.jpg",
+      "photos/16 ans/IMG-20250903-WA1116.jpg",
+      "photos/16 ans/IMG-20250903-WA1177.jpg",
+      "photos/16 ans/VYMH9096.WEBP"
+    ]
+  },
+  {
+    "title": "17 ans",
+    "subtitle": "Souvenirs de ses 17 ans",
+    "photos": [
+      "photos/17 ans/20250101_115521.jpg",
+      "photos/17 ans/20251004_230003.jpg",
+      "photos/17 ans/20251225_110359.jpg",
+      "photos/17 ans/20260331_194111.jpg",
+      "photos/17 ans/1000021581.jpg",
+      "photos/17 ans/1000021587.jpg",
+      "photos/17 ans/1000022394.jpg",
+      "photos/17 ans/1000022400.jpg",
+      "photos/17 ans/1000022424.jpg",
+      "photos/17 ans/1000022501.jpg",
+      "photos/17 ans/1000026366.jpg",
+      "photos/17 ans/1000026400.jpg",
+      "photos/17 ans/1000027588.jpg",
+      "photos/17 ans/Capture2.PNG",
+      "photos/17 ans/IMG-20250412-WA0001.jpg",
+      "photos/17 ans/IMG-20250720-WA0001.jpg",
+      "photos/17 ans/IMG-20250729-WA0009.jpg",
+      "photos/17 ans/IMG-20250801-WA0003.jpg",
+      "photos/17 ans/IMG-20250809-WA0002.jpg",
+      "photos/17 ans/IMG-20250813-WA0005.jpg",
+      "photos/17 ans/IMG-20250903-WA0015.jpg",
+      "photos/17 ans/IMG-20250903-WA0064.jpg",
+      "photos/17 ans/IMG-20250903-WA0101.jpg",
+      "photos/17 ans/IMG-20250903-WA0273.jpg",
+      "photos/17 ans/IMG-20250903-WA0308.jpg",
+      "photos/17 ans/IMG-20250903-WA0364.jpg",
+      "photos/17 ans/IMG-20250903-WA0411.jpg",
+      "photos/17 ans/IMG-20250903-WA0575.jpg",
+      "photos/17 ans/IMG-20250903-WA0590.jpg",
+      "photos/17 ans/IMG-20250903-WA0709.jpg",
+      "photos/17 ans/IMG-20250903-WA0711.jpg",
+      "photos/17 ans/IMG-20250903-WA0712.jpg",
+      "photos/17 ans/IMG-20250903-WA0718.jpg",
+      "photos/17 ans/IMG-20250903-WA0722.jpg",
+      "photos/17 ans/IMG-20250903-WA1116.jpg",
+      "photos/17 ans/IMG-20250903-WA1177.jpg",
+      "photos/17 ans/IMG-20250903-WA1181.jpg",
+      "photos/17 ans/IMG-20250903-WA1226.jpg",
+      "photos/17 ans/IMG-20250903-WA1262.jpg",
+      "photos/17 ans/IMG-20250903-WA1284.jpg",
+      "photos/17 ans/IMG-20250903-WA1295.jpg",
+      "photos/17 ans/IMG-20250903-WA1657.jpg",
+      "photos/17 ans/IMG-20250903-WA1686.jpg",
+      "photos/17 ans/IMG-20250903-WA1703.jpg",
+      "photos/17 ans/IMG-20250903-WA1800.jpg",
+      "photos/17 ans/IMG-20250903-WA1801.jpg",
+      "photos/17 ans/IMG-20250903-WA1812.jpg",
+      "photos/17 ans/IMG-20250903-WA1879.jpg",
+      "photos/17 ans/IMG-20251011-WA0001.jpg",
+      "photos/17 ans/IMG-20251225-WA0003.jpg",
+      "photos/17 ans/IMG-20260314-WA0001.jpg",
+      "photos/17 ans/LHZD0908.JPEG",
+      "photos/17 ans/RMXP9606.WEBP",
+      "photos/17 ans/XKGG3961.JPEG"
+    ]
+  },
+  {
+    "title": "18 ans",
+    "subtitle": "Souvenirs de ses 18 ans",
+    "photos": [
+      "photos/18 ans/96f90343-c2ba-47e1-a197-30d14acabde0.JPG",
+      "photos/18 ans/1000022987.jpg",
+      "photos/18 ans/1000023280.jpg",
+      "photos/18 ans/1000023322.jpg",
+      "photos/18 ans/1000024097.jpg",
+      "photos/18 ans/1000026384.jpg",
+      "photos/18 ans/1000026387.jpg",
+      "photos/18 ans/1000027023.jpg",
+      "photos/18 ans/1000027026.jpg",
+      "photos/18 ans/1000027029.jpg",
+      "photos/18 ans/1000027272.jpg",
+      "photos/18 ans/1000027295.jpg",
+      "photos/18 ans/1000027345.jpg",
+      "photos/18 ans/1000027363.jpg",
+      "photos/18 ans/1000027379.jpg",
+      "photos/18 ans/1000027392.jpg",
+      "photos/18 ans/1000027395.jpg",
+      "photos/18 ans/1000027564.jpg",
+      "photos/18 ans/1000027585.jpg",
+      "photos/18 ans/1000027616.jpg",
+      "photos/18 ans/1000027650.jpg",
+      "photos/18 ans/1000027677.jpg",
+      "photos/18 ans/1000027728.jpg",
+      "photos/18 ans/1000027734.jpg",
+      "photos/18 ans/1000027761.jpg",
+      "photos/18 ans/1000027765.jpg",
+      "photos/18 ans/1000027829.jpg",
+      "photos/18 ans/1000027838.jpg",
+      "photos/18 ans/1000027841.jpg",
+      "photos/18 ans/1000027844.jpg",
+      "photos/18 ans/1000027865.jpg",
+      "photos/18 ans/1000027868.jpg",
+      "photos/18 ans/1000027895.jpg",
+      "photos/18 ans/1000027910.jpg",
+      "photos/18 ans/Capture.PNG",
+      "photos/18 ans/Capture4.PNG",
+      "photos/18 ans/Capture5.PNG",
+      "photos/18 ans/CaptureA.PNG",
+      "photos/18 ans/CaptureB.PNG",
+      "photos/18 ans/IMG_4418.jpeg",
+      "photos/18 ans/IMG_7710.JPG",
+      "photos/18 ans/IMG_20210117_163059.jpg",
+      "photos/18 ans/IMG-20250903-WA0281.jpg",
+      "photos/18 ans/IMG-20250903-WA0290.jpg",
+      "photos/18 ans/IMG-20250903-WA0512.jpg",
+      "photos/18 ans/IMG-20250903-WA0861.jpg",
+      "photos/18 ans/IMG-20250903-WA0863.jpg",
+      "photos/18 ans/IMG-20250903-WA0886.jpg",
+      "photos/18 ans/IMG-20250903-WA1181.jpg",
+      "photos/18 ans/IMG-20260221-WA0000.jpg",
+      "photos/18 ans/IMG-20260314-WA0005.jpg",
+      "photos/18 ans/IMG-20260417-WA0003.jpg",
+      "photos/18 ans/IMG-20260506-WA0005.jpg",
+      "photos/18 ans/IMG-20260519-WA0002.jpg"
+    ]
+  },
+  {
+    "title": "Final",
+    "subtitle": "Une nouvelle page commence",
+    "photos": [
+      "photos/final/PHOTO-2026-05-31-10-55-21.jpg"
+    ]
+  }
+];

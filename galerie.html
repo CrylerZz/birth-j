@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galerie souvenirs - 18 ans</title>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -17,12 +18,17 @@
             --dark: #160d20;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             min-height: 100vh;
-            background: radial-gradient(circle at 15% 10%, rgba(255, 79, 163, .22), transparent 32%),
-            radial-gradient(circle at 85% 0%, rgba(124, 60, 255, .22), transparent 34%),
-            #160d20;
+            background:
+                    radial-gradient(circle at 15% 10%, rgba(255, 79, 163, .22), transparent 32%),
+                    radial-gradient(circle at 85% 0%, rgba(124, 60, 255, .22), transparent 34%),
+                    #160d20;
             font-family: Inter, sans-serif;
             color: white;
         }
@@ -58,6 +64,23 @@
         .modal.is-open {
             display: flex;
         }
+        .loader {
+            width: 54px;
+            height: 54px;
+
+            border-radius: 999px;
+
+            border: 4px solid rgba(255,255,255,.12);
+            border-top-color: white;
+
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -74,12 +97,13 @@
                 <p class="uppercase tracking-[.35em] text-xs font-black text-white/50 mb-4">
                     Souvenirs
                 </p>
+
                 <h1 class="font-display text-5xl md:text-7xl font-extrabold leading-none">
                     Toutes les photos
                 </h1>
+
                 <p class="mt-5 max-w-2xl text-white/70 text-lg">
-                    Retrouve ici toutes les photos du montage, avec possibilité de les voir en grand et de les
-                    télécharger.
+                    Toutes les photos du montage sont ici, rangées par période, avec possibilité de les voir en grand et de les télécharger.
                 </p>
             </div>
 
@@ -92,30 +116,38 @@
     </header>
 
     <section class="max-w-7xl mx-auto sticky top-0 z-20 py-4 backdrop-blur-xl bg-[#160d20]/70">
-        <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
-            <div id="filters" class="flex flex-wrap gap-2"></div>
-
-        </div>
+        <div id="filters" class="flex flex-wrap gap-2"></div>
     </section>
 
     <section class="max-w-7xl mx-auto mt-8">
         <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"></div>
+        <div id="galleryLoader" class="hidden py-20 text-center">
+            <div class="text-6xl animate-pulse mb-4">
+                📸
+            </div>
+
+            <div class="text-xl font-black">
+                Préparation des souvenirs...
+            </div>
+        </div>
     </section>
 
 </main>
 
-<div id="photoModal" class="modal fixed inset-0 z-50 items-center justify-center bg-black/80 p-5">
+<div id="photoModal" class="modal fixed inset-0 z-50 items-center justify-center bg-black/85 p-5">
     <button id="closeModal" class="absolute top-5 right-5 rounded-full bg-white text-black px-5 py-3 font-black">
         Fermer
     </button>
 
     <div class="max-w-5xl w-full">
         <img id="modalImg" src="" alt="" class="max-h-[78vh] mx-auto rounded-3xl object-contain">
+
         <div class="mt-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <p id="modalChapter" class="text-white/50 text-sm uppercase tracking-[.25em] font-black"></p>
-                <h2 id="modalTitle" class="text-2xl font-black"></h2>
+                <h2 id="modalTitle" class="text-2xl font-black break-all"></h2>
             </div>
+
             <a id="modalDownload" href="#" download
                class="rounded-full bg-white text-[#160d20] px-5 py-3 font-black text-center">
                 Télécharger cette photo
@@ -124,57 +156,10 @@
     </div>
 </div>
 
+<script src="assets/js/photos-manifest.js"></script>
+
 <script>
-    const chapters = [
-        {
-            title: 'Les premiers sourires',
-            photos: [
-                {
-                    src: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=1600&auto=format&fit=crop',
-                    label: 'Premier sourire'
-                },
-                {
-                    src: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=1600&auto=format&fit=crop',
-                    label: 'Mini star'
-                },
-                {
-                    src: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?q=80&w=1600&auto=format&fit=crop',
-                    label: 'Déjà curieuse'
-                }
-            ]
-        },
-        {
-            title: 'Les bêtises',
-            photos: [
-                {
-                    src: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=1600&auto=format&fit=crop',
-                    label: 'Fou rire'
-                },
-                {
-                    src: 'https://images.unsplash.com/photo-1542385151-efd9000785a0?q=80&w=1600&auto=format&fit=crop',
-                    label: 'Grimace validée'
-                }
-            ]
-        },
-        {
-            title: 'La famille',
-            photos: [
-                {
-                    src: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=1600&auto=format&fit=crop',
-                    label: 'Tous ensemble'
-                }
-            ]
-        },
-        {
-            title: 'Aujourd’hui',
-            photos: [
-                {
-                    src: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1600&auto=format&fit=crop',
-                    label: '18 ans'
-                }
-            ]
-        }
-    ];
+    const chapters = window.CHAPTERS || [];
 
     const gallery = document.querySelector('#gallery');
     const filters = document.querySelector('#filters');
@@ -187,18 +172,25 @@
     const downloadAllBtn = document.querySelector('#downloadAllBtn');
 
     let currentFilter = 'all';
+    let visibleCount = 40;
+    const batchSize = 40;
 
     const allPhotos = chapters.flatMap((chapter, chapterIndex) => {
-        return chapter.photos.map((photo, photoIndex) => ({
-            ...photo,
-            chapter: chapter.title,
-            chapterIndex,
-            index: photoIndex
-        }));
+        return (chapter.photos || []).map((src, photoIndex) => {
+            const filename = src.split('/').pop();
+
+            return {
+                src,
+                label: filename,
+                chapter: chapter.title,
+                chapterIndex,
+                index: photoIndex
+            };
+        });
     });
 
     function slugify(text) {
-        return text
+        return String(text)
             .toLowerCase()
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
@@ -206,9 +198,16 @@
             .replace(/(^-|-$)/g, '');
     }
 
+    function getExtension(src) {
+        const cleanSrc = src.split('?')[0];
+        const ext = cleanSrc.split('.').pop();
+
+        return ext ? ext.toLowerCase() : 'jpg';
+    }
+
     async function downloadImage(url, filename) {
         try {
-            const response = await fetch(url, {mode: 'cors'});
+            const response = await fetch(encodeURI(url));
 
             if (!response.ok) {
                 throw new Error('Image inaccessible');
@@ -227,15 +226,15 @@
             URL.revokeObjectURL(blobUrl);
         } catch (e) {
             console.error(e);
-            alert("Impossible de télécharger cette image. Avec Unsplash, c’est parfois bloqué. Avec tes photos locales, ça marchera.");
+            alert("Impossible de télécharger cette image. Lance la page avec un petit serveur local si besoin : python3 -m http.server 8080");
         }
     }
 
     function createFilters() {
         const buttons = [
-            {label: 'Toutes', value: 'all'},
+            { label: `Toutes (${allPhotos.length})`, value: 'all' },
             ...chapters.map((chapter, index) => ({
-                label: chapter.title,
+                label: `${chapter.title} (${chapter.photos?.length || 0})`,
                 value: String(index)
             }))
         ];
@@ -252,7 +251,7 @@
         filters.querySelectorAll('button').forEach(button => {
             button.addEventListener('click', () => {
                 currentFilter = button.dataset.filter;
-
+                visibleCount = 40;
                 filters.querySelectorAll('button').forEach(btn => btn.classList.remove('is-active'));
                 button.classList.add('is-active');
 
@@ -262,47 +261,87 @@
     }
 
     function renderGallery() {
-        const photos = allPhotos.filter(photo => {
-            return currentFilter === 'all' || String(photo.chapterIndex) === currentFilter;
-        });
+        const loader = document.querySelector('#galleryLoader');
 
-        gallery.innerHTML = photos.map(photo => {
-            const realIndex = allPhotos.indexOf(photo);
+        loader.classList.remove('hidden');
+        gallery.style.opacity = '0';
 
-            return `
-                <article class="photo-card group">
-                    <button class="open-photo block w-full text-left" data-index="${realIndex}">
-                        <img src="${photo.src}" alt="${photo.label}" loading="lazy">
-                    </button>
+        setTimeout(() => {
+            const filteredPhotos = allPhotos.filter(photo => {
+                return currentFilter === 'all' || String(photo.chapterIndex) === currentFilter;
+            });
 
-                    <div class="p-4">
-                        <p class="text-xs uppercase tracking-[.22em] text-white/40 font-black mb-2">
-                            ${photo.chapter}
-                        </p>
+            const photos = filteredPhotos.slice(0, visibleCount);
+            const hasMore = visibleCount < filteredPhotos.length;
 
-                        <h2 class="font-black leading-tight">${photo.label}</h2>
-
-                        <div class="mt-4 flex gap-2">
-                            <button
-                                class="open-photo flex-1 rounded-full bg-white/10 px-3 py-2 text-sm font-black"
-                                data-index="${realIndex}"
-                            >
-                                Voir
-                            </button>
-
-                            <button
-                                class="download-one rounded-full bg-white text-[#160d20] px-3 py-2 text-sm font-black"
-                                data-index="${realIndex}"
-                            >
-                                ↓
-                            </button>
-                        </div>
-                    </div>
-                </article>
+            if (!photos.length) {
+                gallery.innerHTML = `
+                <div class="col-span-full rounded-[2rem] border border-white/10 bg-white/5 p-8 text-white/70">
+                    Aucune photo trouvée.
+                </div>
             `;
-        }).join('');
+            } else {
+                gallery.innerHTML = photos.map(photo => {
+                    const realIndex = allPhotos.indexOf(photo);
 
-        bindGalleryButtons();
+                    return `
+                    <article class="photo-card group">
+                        <button class="open-photo block w-full text-left" data-index="${realIndex}">
+                            <img
+                                src="${encodeURI(photo.src)}"
+                                alt="${photo.label}"
+                                loading="lazy"
+                                decoding="async"
+                            >
+                        </button>
+
+                        <div class="p-4">
+
+                            <div class="mt-4 flex gap-2">
+                                <button
+                                    class="open-photo flex-1 rounded-full bg-white/10 px-3 py-2 text-sm font-black"
+                                    data-index="${realIndex}"
+                                >
+                                    Voir
+                                </button>
+
+                                <button
+                                    class="download-one rounded-full bg-white text-[#160d20] px-3 py-2 text-sm font-black"
+                                    data-index="${realIndex}"
+                                >
+                                    ↓
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+                }).join('');
+
+                if (hasMore) {
+                    gallery.innerHTML += `
+                    <div class="col-span-full flex justify-center py-8">
+                        <button id="loadMoreBtn"
+                            class="rounded-full bg-white text-[#160d20] px-6 py-3 font-black">
+                            Voir plus (${filteredPhotos.length - visibleCount} restantes)
+                        </button>
+                    </div>
+                `;
+                }
+            }
+
+            bindGalleryButtons();
+
+            document.querySelector('#loadMoreBtn')?.addEventListener('click', () => {
+                visibleCount += batchSize;
+                renderGallery();
+            });
+
+            loader.classList.add('hidden');
+
+            gallery.style.transition = 'opacity .35s ease';
+            gallery.style.opacity = '1';
+
+        }, 350);
     }
 
     function bindGalleryButtons() {
@@ -317,22 +356,25 @@
                 e.stopPropagation();
 
                 const photo = allPhotos[Number(btn.dataset.index)];
-                downloadImage(photo.src, `${slugify(photo.label)}.jpg`);
+                const ext = getExtension(photo.src);
+
+                downloadImage(photo.src, `${String(photo.index + 1).padStart(3, '0')}-${slugify(photo.chapter)}-${slugify(photo.label)}.${ext}`);
             });
         });
     }
 
     function openPhoto(index) {
         const photo = allPhotos[index];
+        const ext = getExtension(photo.src);
 
-        modalImg.src = photo.src;
+        modalImg.src = encodeURI(photo.src);
         modalImg.alt = photo.label;
         modalTitle.textContent = photo.label;
         modalChapter.textContent = photo.chapter;
 
         modalDownload.onclick = e => {
             e.preventDefault();
-            downloadImage(photo.src, `${slugify(photo.label)}.jpg`);
+            downloadImage(photo.src, `${String(photo.index + 1).padStart(3, '0')}-${slugify(photo.chapter)}-${slugify(photo.label)}.${ext}`);
         };
 
         modal.classList.add('is-open');
@@ -346,21 +388,34 @@
     closeModal.addEventListener('click', closePhotoModal);
 
     modal.addEventListener('click', e => {
-        if (e.target === modal) closePhotoModal();
+        if (e.target === modal) {
+            closePhotoModal();
+        }
     });
 
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') closePhotoModal();
+        if (e.key === 'Escape') {
+            closePhotoModal();
+        }
     });
 
     downloadAllBtn.addEventListener('click', async () => {
+        if (!allPhotos.length) {
+            alert('Aucune photo à télécharger.');
+            return;
+        }
+
         if (typeof JSZip === 'undefined') {
             alert('JSZip ne semble pas chargé.');
             return;
         }
 
+        const confirmDownload = confirm(`Le ZIP va contenir ${allPhotos.length} photos. Selon le poids des images, cela peut prendre du temps. Continuer ?`);
+
+        if (!confirmDownload) return;
+
         downloadAllBtn.disabled = true;
-        downloadAllBtn.textContent = 'Préparation...';
+        downloadAllBtn.textContent = 'Préparation du ZIP...';
 
         const zip = new JSZip();
         const folder = zip.folder('souvenirs-18-ans');
@@ -369,17 +424,20 @@
 
         for (const photo of allPhotos) {
             try {
-                const response = await fetch(photo.src, {mode: 'cors'});
+                const response = await fetch(encodeURI(photo.src));
 
                 if (!response.ok) {
                     throw new Error('Image inaccessible');
                 }
 
                 const blob = await response.blob();
-                const fileName = `${String(count + 1).padStart(2, '0')}-${slugify(photo.label)}.jpg`;
+                const ext = getExtension(photo.src);
+                const fileName = `${String(count + 1).padStart(3, '0')}-${slugify(photo.chapter)}-${slugify(photo.label)}.${ext}`;
 
                 folder.file(fileName, blob);
                 count++;
+
+                downloadAllBtn.textContent = `Préparation... ${count}/${allPhotos.length}`;
             } catch (e) {
                 console.warn('Image ignorée :', photo.src);
             }
@@ -392,7 +450,9 @@
             return;
         }
 
-        const content = await zip.generateAsync({type: 'blob'});
+        downloadAllBtn.textContent = 'Création du ZIP...';
+
+        const content = await zip.generateAsync({ type: 'blob' });
         const zipUrl = URL.createObjectURL(content);
 
         const a = document.createElement('a');
@@ -411,7 +471,6 @@
     createFilters();
     renderGallery();
 </script>
-
 
 </body>
 </html>
