@@ -1,7 +1,6 @@
 window.CHAPTERS = [
   {
-    "title": "Grossesse",
-    "subtitle": "Le tout début de l’histoire",
+    "title": "Avant toi, on dormait encore",
     "photos": [
       "photos/grossesse/IMGP0045.JPG",
       "photos/grossesse/IMGP0119.JPG",
@@ -40,22 +39,10 @@ window.CHAPTERS = [
       "photos/grossesse/julia mars 034.jpg",
       "photos/grossesse/julia mars 087.jpg",
       "photos/grossesse/niherne julia 008.jpg",
-      "photos/grossesse/niherne julia 032.jpg"
-    ]
-  },
-  {
-    "title": "1 an",
-    "subtitle": "Souvenirs de ses 1 an",
-    "photos": [
+      "photos/grossesse/niherne julia 032.jpg",
       "photos/1 an/julia 2 052.jpg",
       "photos/1 an/julia mars 106.jpg",
-      "photos/1 an/julia mars 113.jpg"
-    ]
-  },
-  {
-    "title": "2 ans",
-    "subtitle": "Souvenirs de ses 2 ans",
-    "photos": [
+      "photos/1 an/julia mars 113.jpg",
       "photos/2 ans/1000020472.jpg",
       "photos/2 ans/1000020474.jpg",
       "photos/2 ans/avril2010nathanjulia 069.jpg",
@@ -73,13 +60,7 @@ window.CHAPTERS = [
       "photos/2 ans/IMGP2019.JPG",
       "photos/2 ans/janvier 2010 nathan 012.jpg",
       "photos/2 ans/janvier 2010 nathan 017.jpg",
-      "photos/2 ans/julia 2 205.jpg"
-    ]
-  },
-  {
-    "title": "3 ans",
-    "subtitle": "Souvenirs de ses 3 ans",
-    "photos": [
+      "photos/2 ans/julia 2 205.jpg",
       "photos/3 ans/avril2011 026.jpg",
       "photos/3 ans/IMGP1750.JPG",
       "photos/3 ans/IMGP1848.JPG",
@@ -87,22 +68,10 @@ window.CHAPTERS = [
       "photos/3 ans/IMGP1921.JPG",
       "photos/3 ans/janvier2011 026.jpg",
       "photos/3 ans/mars2011 010.jpg",
-      "photos/3 ans/septembre 2011 084.jpg"
-    ]
-  },
-  {
-    "title": "4 ans",
-    "subtitle": "Souvenirs de ses 4 ans",
-    "photos": [
+      "photos/3 ans/septembre 2011 084.jpg",
       "photos/4 ans/anniversaire julia 4 ans 003.jpg",
       "photos/4 ans/decembre 2012 088.jpg",
-      "photos/4 ans/fevrier 2012 009.jpg"
-    ]
-  },
-  {
-    "title": "5 ans",
-    "subtitle": "Souvenirs de ses 5 ans",
-    "photos": [
+      "photos/4 ans/fevrier 2012 009.jpg",
       "photos/5 ans/IMGP4079.JPG",
       "photos/5 ans/P1040157.JPG",
       "photos/5 ans/P2250087.JPG",
@@ -112,54 +81,31 @@ window.CHAPTERS = [
       "photos/5 ans/P8140190.JPG",
       "photos/5 ans/P9210193.JPG",
       "photos/5 ans/PA260024.JPG"
-    ]
+    ],
+    "isFinal": false,
+    "mainPhoto": null
   },
   {
-    "title": "6 ans",
-    "subtitle": "Souvenirs de ses 6 ans",
+    "title": "Apprentissage des bêtises",
     "photos": [
       "photos/6 ans/P1050158.JPG",
       "photos/6 ans/P1050162.JPG",
       "photos/6 ans/P4060097.JPG",
-      "photos/6 ans/P4060117.JPG"
-    ]
-  },
-  {
-    "title": "7 ans",
-    "subtitle": "Souvenirs de ses 7 ans",
-    "photos": [
+      "photos/6 ans/P4060117.JPG",
       "photos/7 ans/20150502_142509.jpg",
       "photos/7 ans/P5020062.JPG",
       "photos/7 ans/P6110036.JPG",
-      "photos/7 ans/P8140185.JPG"
-    ]
-  },
-  {
-    "title": "8 ans",
-    "subtitle": "Souvenirs de ses 8 ans",
-    "photos": [
+      "photos/7 ans/P8140185.JPG",
       "photos/8 ans/20160305_201254.jpg",
       "photos/8 ans/20160504_181947.jpg",
       "photos/8 ans/RJQE1989.JPEG",
       "photos/8 ans/Screenshot_20211105_205423_com.android.gallery3d.jpg",
       "photos/8 ans/Screenshot_20211105_205524_com.android.gallery3d.jpg",
-      "photos/8 ans/UTTY0161.JPEG"
-    ]
-  },
-  {
-    "title": "9 ans",
-    "subtitle": "Souvenirs de ses 9 ans",
-    "photos": [
+      "photos/8 ans/UTTY0161.JPEG",
       "photos/9 ans/20170408_215140.jpg",
       "photos/9 ans/PHOTO-2026-05-24-19-26-33.jpg",
       "photos/9 ans/PHOTO-2026-05-24-19-26-33[1].jpg",
-      "photos/9 ans/PHOTO-2026-05-25-11-06-49[1].jpg"
-    ]
-  },
-  {
-    "title": "10 ans",
-    "subtitle": "Souvenirs de ses 10 ans",
-    "photos": [
+      "photos/9 ans/PHOTO-2026-05-25-11-06-49[1].jpg",
       "photos/10 ans/IMG_20180408_124705.jpg",
       "photos/10 ans/PHOTO-2026-05-25-11-06-50.jpg",
       "photos/10 ans/PHOTO-2026-05-25-11-06-50[1].jpg",
@@ -168,26 +114,14 @@ window.CHAPTERS = [
       "photos/10 ans/PHOTO-2026-05-25-11-06-50[4].jpg",
       "photos/10 ans/PHOTO-2026-05-25-11-06-50[5].jpg",
       "photos/10 ans/PHOTO-2026-05-25-11-06-50[6].jpg",
-      "photos/10 ans/Snapchat-1165834759.jpg"
-    ]
-  },
-  {
-    "title": "11 ans",
-    "subtitle": "Souvenirs de ses 11 ans",
-    "photos": [
+      "photos/10 ans/Snapchat-1165834759.jpg",
       "photos/11 ans/1000027333.jpg",
       "photos/11 ans/IMG_20190407_144825.jpg",
       "photos/11 ans/IMG_20190427_135017.jpg",
       "photos/11 ans/IMG_20190515_174641.jpg",
       "photos/11 ans/IMG_20190731_151323.jpg",
       "photos/11 ans/IMG_20190821_180533.jpg",
-      "photos/11 ans/PART_1580054917852.jpg"
-    ]
-  },
-  {
-    "title": "12 ans",
-    "subtitle": "Souvenirs de ses 12 ans",
-    "photos": [
+      "photos/11 ans/PART_1580054917852.jpg",
       "photos/12 ans/CULS5955.JPEG",
       "photos/12 ans/GHOM6245.JPEG",
       "photos/12 ans/HAOW6652.JPEG",
@@ -199,11 +133,12 @@ window.CHAPTERS = [
       "photos/12 ans/PicsArt_07-03-07.29.09.jpg",
       "photos/12 ans/QJIL5531.JPEG",
       "photos/12 ans/SDKL5043.JPEG"
-    ]
+    ],
+    "isFinal": false,
+    "mainPhoto": null
   },
   {
-    "title": "13 ans",
-    "subtitle": "Souvenirs de ses 13 ans",
+    "title": "Ado détectée, prudence recommandée",
     "photos": [
       "photos/13 ans/GSJV4363.JPEG",
       "photos/13 ans/HHXH7584.JPEG",
@@ -218,21 +153,9 @@ window.CHAPTERS = [
       "photos/13 ans/IMG_20221230_190133.jpg",
       "photos/13 ans/KYAF6475.JPEG",
       "photos/13 ans/MTDO9285.JPEG",
-      "photos/13 ans/SYME9852.JPEG"
-    ]
-  },
-  {
-    "title": "14 ans",
-    "subtitle": "Souvenirs de ses 14 ans",
-    "photos": [
+      "photos/13 ans/SYME9852.JPEG",
       "photos/14 ans/IMG-20240412-WA0001.jpg",
-      "photos/14 ans/YKVW6157.JPEG"
-    ]
-  },
-  {
-    "title": "15 ans",
-    "subtitle": "Souvenirs de ses 15 ans",
-    "photos": [
+      "photos/14 ans/YKVW6157.JPEG",
       "photos/15 ans/Capture.PNG",
       "photos/15 ans/DQUW9660.WEBP",
       "photos/15 ans/IAKL6356.JPEG",
@@ -243,26 +166,14 @@ window.CHAPTERS = [
       "photos/15 ans/PART_1634381515539_PART_1569780601403.jpg",
       "photos/15 ans/PART_1634381520261_PART_1568553382882.jpg",
       "photos/15 ans/PART_1634381524661_PART_1567955623916.jpg",
-      "photos/15 ans/QDRU8140.JPEG"
-    ]
-  },
-  {
-    "title": "16 ans",
-    "subtitle": "Souvenirs de ses 16 ans",
-    "photos": [
+      "photos/15 ans/QDRU8140.JPEG",
       "photos/16 ans/20240605_120610.jpg",
       "photos/16 ans/1000027291.jpg",
       "photos/16 ans/IMG_20240722_130630.jpg",
       "photos/16 ans/IMG-20250903-WA0806.jpg",
       "photos/16 ans/IMG-20250903-WA1116.jpg",
       "photos/16 ans/IMG-20250903-WA1177.jpg",
-      "photos/16 ans/VYMH9096.WEBP"
-    ]
-  },
-  {
-    "title": "17 ans",
-    "subtitle": "Souvenirs de ses 17 ans",
-    "photos": [
+      "photos/16 ans/VYMH9096.WEBP",
       "photos/17 ans/20250101_115521.jpg",
       "photos/17 ans/20251004_230003.jpg",
       "photos/17 ans/20251225_110359.jpg",
@@ -310,19 +221,12 @@ window.CHAPTERS = [
       "photos/17 ans/IMG-20250903-WA1800.jpg",
       "photos/17 ans/IMG-20250903-WA1801.jpg",
       "photos/17 ans/IMG-20250903-WA1812.jpg",
-      "photos/17 ans/IMG-20250903-WA1879.jpg",
       "photos/17 ans/IMG-20251011-WA0001.jpg",
       "photos/17 ans/IMG-20251225-WA0003.jpg",
       "photos/17 ans/IMG-20260314-WA0001.jpg",
       "photos/17 ans/LHZD0908.JPEG",
       "photos/17 ans/RMXP9606.WEBP",
-      "photos/17 ans/XKGG3961.JPEG"
-    ]
-  },
-  {
-    "title": "18 ans",
-    "subtitle": "Souvenirs de ses 18 ans",
-    "photos": [
+      "photos/17 ans/XKGG3961.JPEG",
       "photos/18 ans/96f90343-c2ba-47e1-a197-30d14acabde0.JPG",
       "photos/18 ans/1000022987.jpg",
       "photos/18 ans/1000023280.jpg",
@@ -377,13 +281,21 @@ window.CHAPTERS = [
       "photos/18 ans/IMG-20260417-WA0003.jpg",
       "photos/18 ans/IMG-20260506-WA0005.jpg",
       "photos/18 ans/IMG-20260519-WA0002.jpg"
-    ]
+    ],
+    "isFinal": false,
+    "mainPhoto": null
   },
   {
-    "title": "Final",
-    "subtitle": "Une nouvelle page commence",
+    "title": "Le bisou de l’équipe officielle",
     "photos": [
-      "photos/final/PHOTO-2026-05-31-10-55-21.jpg"
-    ]
+      "photos/final/0.jpg",
+      "photos/final/1.JPG",
+      "photos/final/2.JPG",
+      "photos/final/3.JPG",
+      "photos/final/4.jpg",
+      "photos/final/5.jpg"
+    ],
+    "isFinal": true,
+    "mainPhoto": "photos/final/main.jpg"
   }
 ];
