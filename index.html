@@ -1,39 +1,109 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>18 ans</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
-    <link type='text/css' href='style.css' rel='Stylesheet'/>
-
-</head>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>18 ans</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+    </head>
 <body>
+
+<div id="startScreen" class="start-screen">
+    <div class="start-bg-grid"></div>
+    <div class="start-vignette"></div>
+    <div class="start-bokeh start-bokeh--left"></div>
+    <div class="start-bokeh start-bokeh--right"></div>
+
+    <div class="start-flower start-flower--left"></div>
+    <div class="start-flower start-flower--right"></div>
+
+
+    <div class="memory-doodle memory-doodle--heart-left">♡</div>
+    <div class="memory-doodle memory-doodle--heart-right">♡</div>
+    <div class="memory-doodle memory-doodle--star-left">✩</div>
+    <div class="memory-doodle memory-doodle--star-right">✦</div>
+    <div class="memory-doodle memory-doodle--spark">✧</div>
+
+    <main class="start-content">
+        <div class="start-neon-heart">
+            ♡
+            <span></span>
+            <span></span>
+        </div>
+
+        <p class="start-subtitle">
+            18 années de souvenirs
+        </p>
+
+        <h1 class="start-title">
+            Julia
+            <span>♡</span>
+        </h1>
+
+        <div class="start-line">
+            <span></span>
+            <i>∞</i>
+            <span></span>
+        </div>
+
+        <button id="startBtn" class="start-btn" type="button">
+            <span>Lancer le diaporama</span>
+            <i></i>
+        </button>
+
+    </main>
+</div>
+
+
 <div class="noise"></div>
 
 <main class="stage" id="stage">
+
     <div class="ambient-glow ambient-glow--pink"></div>
     <div class="ambient-glow ambient-glow--purple"></div>
     <div class="ambient-glow ambient-glow--yellow"></div>
 
+    <!-- Décor permanent du diaporama -->
+    <div class="scene-decoration">
+        <div class="scene-grid"></div>
+        <div class="scene-stars"></div>
+
+        <div class="scene-glow scene-glow-left"></div>
+        <div class="scene-glow scene-glow-right"></div>
+
+        <div class="scene-heart scene-heart-1">♡</div>
+        <div class="scene-heart scene-heart-2">♡</div>
+        <div class="scene-heart scene-heart-3">♡</div>
+
+        <div class="scene-star scene-star-1">✦</div>
+        <div class="scene-star scene-star-2">✧</div>
+        <div class="scene-star scene-star-3">✩</div>
+    </div>
 
     <section class="chapter-intro" id="chapterIntro">
         <div>
-            <p class="chapter-number uppercase tracking-[.28em] text-xs md:text-sm font-black text-white/70 mb-6 mx-auto w-fit"
-               id="chapterNumber">
+            <p
+                    class="chapter-number uppercase tracking-[.28em] text-xs md:text-sm font-black text-white/70 mb-6 mx-auto w-fit"
+                    id="chapterNumber"
+            >
                 Chapitre 01
             </p>
-            <h2 class="chapter-title font-display text-6xl md:text-8xl xl:text-9xl font-extrabold" id="chapterTitle">
+
+            <h2
+                    class="chapter-title font-display text-6xl md:text-8xl xl:text-9xl font-extrabold"
+                    id="chapterTitle"
+            >
                 Les premiers sourires
             </h2>
         </div>
     </section>
 
     <div class="big-18">18</div>
+
     <section class="photos-layer" id="photosLayer"></section>
+
     <div class="chapter-caption" id="chapterCaption"></div>
 
     <section class="final-screen" id="finalScreen"></section>
@@ -43,11 +113,19 @@
     </div>
 
     <div class="player-controls" aria-label="Contrôles du montage">
-        <button type="button" class="control-btn" id="togglePlayBtn">Pause</button>
-        <button type="button" class="control-btn control-btn--ghost" id="restartBtn">Revoir</button>
+        <button type="button" class="control-btn" id="togglePlayBtn">
+            Pause
+        </button>
+
+        <button type="button" class="control-btn control-btn--ghost" id="restartBtn">
+            Revoir
+        </button>
     </div>
 
 </main>
+
+<audio id="musicA" preload="auto"></audio>
+<audio id="musicB" preload="auto"></audio>
 
 <script src="assets/js/photos-manifest.js"></script>
 <script src="script.js"></script>

@@ -1,15 +1,15 @@
 const config = {
-    photoDuration: 1.4,
-    transitionDuration: 1.4,
+    photoDuration: 1.2,
+    transitionDuration: 1.2,
     maxDecorPhotos: 8,
     countdownDuration: 5,
     finalPhotoHoldDuration: 8,
 };
 
 const debug = {
-    enabled: true,
-    startChapterIndex: 2,
-    skipCountdown: true,
+    enabled: false,
+    startChapterIndex: 0,
+    skipCountdown: false,
 };
 
 const chapters = window.CHAPTERS || [];
@@ -22,6 +22,29 @@ const progressBar = document.querySelector('#progressBar');
 const togglePlayBtn = document.querySelector('#togglePlayBtn');
 const restartBtn = document.querySelector('#restartBtn');
 const stage = document.querySelector('#stage');
+
+const audioA = document.querySelector('#musicA');
+const audioB = document.querySelector('#musicB');
+
+let currentAudio = audioA;
+let nextAudio = audioB;
+let currentMusicIndex = 0;
+let isMusicMixing = false;
+
+const musicConfig = {
+    volume: 0.48,
+    fadeInDuration: 4,
+    crossFadeDuration: 8,
+    mixBeforeEnd: 10,
+};
+
+const musicPlaylist = [
+    ...new Set(
+        chapters
+            .map(chapter => chapter.music)
+            .filter(Boolean)
+    )
+];
 
 let mainTl = null;
 let isPaused = false;
@@ -48,6 +71,160 @@ const finalDecorPositions = [
     { x: 520, y: 315, r: 5, s: .31 },
 ];
 
+/* VARIANTES D'ANIMATION PHOTOS */
+
+const animationHistory = {
+    enter: [],
+    idle: [],
+    park: [],
+};
+
+const animationConfig = {
+    avoidRepeatCount: 3,
+};
+
+const ENTER_VARIANTS = [
+    {
+        name: 'softZoomBlur',
+        from: () => ({ x: 0, y: 24, scale: .54, rotation: randomBetween(-5, 5), opacity: 0, filter: 'blur(18px)' }),
+        to: () => ({ x: 0, y: 0, scale: 1, rotation: randomBetween(-2, 2), opacity: 1, filter: 'blur(0px)' }),
+        ease: 'power3.out',
+    },
+    {
+        name: 'slideFromLeft',
+        from: () => ({ x: -260, y: randomBetween(-45, 45), scale: .82, rotation: randomBetween(-9, -4), opacity: 0, filter: 'blur(6px)' }),
+        to: () => ({ x: 0, y: 0, scale: 1, rotation: randomBetween(-2.2, 1), opacity: 1, filter: 'blur(0px)' }),
+        ease: 'expo.out',
+    },
+    {
+        name: 'slideFromRight',
+        from: () => ({ x: 260, y: randomBetween(-45, 45), scale: .82, rotation: randomBetween(4, 9), opacity: 0, filter: 'blur(6px)' }),
+        to: () => ({ x: 0, y: 0, scale: 1, rotation: randomBetween(-1, 2.2), opacity: 1, filter: 'blur(0px)' }),
+        ease: 'expo.out',
+    },
+    {
+        name: 'riseFromBottom',
+        from: () => ({ x: randomBetween(-35, 35), y: 150, scale: .78, rotation: randomBetween(-4, 4), opacity: 0, filter: 'blur(10px)' }),
+        to: () => ({ x: 0, y: 0, scale: 1, rotation: randomBetween(-2, 2), opacity: 1, filter: 'blur(0px)' }),
+        ease: 'back.out(1.15)',
+    },
+    {
+        name: 'dropFromTop',
+        from: () => ({ x: randomBetween(-35, 35), y: -140, scale: .86, rotation: randomBetween(-7, 7), opacity: 0, filter: 'blur(8px)' }),
+        to: () => ({ x: 0, y: 0, scale: 1, rotation: randomBetween(-2, 2), opacity: 1, filter: 'blur(0px)' }),
+        ease: 'back.out(1.3)',
+    },
+    {
+        name: 'rotateReveal',
+        from: () => ({ x: 0, y: 0, scale: .72, rotation: randomSign() * randomBetween(12, 18), opacity: 0, filter: 'blur(12px)' }),
+        to: () => ({ x: 0, y: 0, scale: 1, rotation: randomBetween(-1.8, 1.8), opacity: 1, filter: 'blur(0px)' }),
+        ease: 'power4.out',
+    },
+    {
+        name: 'snapPop',
+        from: () => ({ x: 0, y: 0, scale: .32, rotation: randomBetween(-3, 3), opacity: 0, filter: 'blur(3px)' }),
+        to: () => ({ x: 0, y: 0, scale: 1, rotation: randomBetween(-2, 2), opacity: 1, filter: 'blur(0px)' }),
+        ease: 'back.out(1.8)',
+    },
+];
+
+const IDLE_VARIANTS = [
+    {
+        name: 'slowZoomIn',
+        to: () => ({ scale: 1.045, x: randomBetween(-8, 8), y: randomBetween(-5, 5), rotation: randomBetween(-1.5, 1.5) }),
+    },
+    {
+        name: 'slowZoomOut',
+        to: () => ({ scale: .965, x: randomBetween(-8, 8), y: randomBetween(-5, 5), rotation: randomBetween(-1.5, 1.5) }),
+    },
+    {
+        name: 'driftLeft',
+        to: () => ({ x: -34, y: randomBetween(-10, 10), scale: 1.018, rotation: randomBetween(-2.2, -.4) }),
+    },
+    {
+        name: 'driftRight',
+        to: () => ({ x: 34, y: randomBetween(-10, 10), scale: 1.018, rotation: randomBetween(.4, 2.2) }),
+    },
+    {
+        name: 'gentleFloat',
+        to: () => ({ x: randomBetween(-16, 16), y: randomBetween(-20, -8), scale: 1.025, rotation: randomBetween(-1.4, 1.4) }),
+    },
+    {
+        name: 'quietHold',
+        to: () => ({ x: randomBetween(-4, 4), y: randomBetween(-4, 4), scale: 1.005, rotation: randomBetween(-.6, .6) }),
+    },
+];
+
+const PARK_VARIANTS = [
+    {
+        name: 'classicBack',
+        build: (pos) => ({ x: pos.x, y: pos.y, scale: pos.s, rotation: pos.r, opacity: 1, filter: 'blur(0px)' }),
+        ease: 'power3.inOut',
+    },
+    {
+        name: 'blurToBack',
+        build: (pos) => ({ x: pos.x, y: pos.y, scale: pos.s, rotation: pos.r, opacity: .96, filter: 'blur(1px)' }),
+        ease: 'power2.inOut',
+    },
+    {
+        name: 'spinToBack',
+        build: (pos) => ({ x: pos.x, y: pos.y, scale: pos.s, rotation: pos.r + randomSign() * randomBetween(5, 9), opacity: 1, filter: 'blur(0px)' }),
+        ease: 'back.inOut(1.1)',
+    },
+    {
+        name: 'pushAway',
+        build: (pos) => ({ x: pos.x, y: pos.y, scale: pos.s * .92, rotation: pos.r, opacity: .92, filter: 'blur(1.5px)' }),
+        ease: 'power4.inOut',
+    },
+    {
+        name: 'floatToSlot',
+        build: (pos) => ({ x: pos.x + randomBetween(-18, 18), y: pos.y + randomBetween(-14, 14), scale: pos.s, rotation: pos.r, opacity: 1, filter: 'blur(0px)' }),
+        ease: 'sine.inOut',
+    },
+    {
+        name: 'quickSlideBack',
+        build: (pos) => ({ x: pos.x, y: pos.y, scale: pos.s, rotation: pos.r, opacity: 1, filter: 'blur(0px)' }),
+        ease: 'expo.inOut',
+        durationFactor: .82,
+    },
+];
+
+function randomBetween(min, max) {
+    return min + Math.random() * (max - min);
+}
+
+function randomSign() {
+    return Math.random() < .5 ? -1 : 1;
+}
+
+function pickVariant(type, variants) {
+    if (!variants.length) return null;
+
+    const recent = animationHistory[type] || [];
+    const available = variants.filter(variant => !recent.includes(variant.name));
+    const pool = available.length ? available : variants;
+    const variant = pool[Math.floor(Math.random() * pool.length)];
+
+    animationHistory[type].push(variant.name);
+    animationHistory[type] = animationHistory[type].slice(-animationConfig.avoidRepeatCount);
+
+    return variant;
+}
+
+function resetAnimationHistory() {
+    animationHistory.enter = [];
+    animationHistory.idle = [];
+    animationHistory.park = [];
+}
+
+function buildPhotoScene() {
+    return {
+        enter: pickVariant('enter', ENTER_VARIANTS),
+        idle: pickVariant('idle', IDLE_VARIANTS),
+        park: pickVariant('park', PARK_VARIANTS),
+    };
+}
+
 function preloadImage(src) {
     if (!src) return;
     const img = new Image();
@@ -59,7 +236,9 @@ function createCard(src, className = '') {
     card.className = `polaroid ${className}`;
 
     const img = document.createElement('img');
-    img.src = encodeURI(src);
+    const encodedSrc = encodeURI(src);
+
+    img.src = encodedSrc;
     img.alt = 'Souvenir';
     img.loading = 'eager';
     img.decoding = 'async';
@@ -77,6 +256,8 @@ function createCard(src, className = '') {
         scale: .72,
         rotation: 0,
         opacity: 0,
+        filter: 'blur(0px)',
+        transformOrigin: '50% 50%',
         force3D: true,
         zIndex: globalZIndex++,
     });
@@ -86,7 +267,11 @@ function createCard(src, className = '') {
 }
 
 function clearCards() {
-    currentCards.forEach(card => card.remove());
+    currentCards.forEach(card => {
+        gsap.killTweensOf(card);
+        card.remove();
+    });
+
     currentCards = [];
 }
 
@@ -95,6 +280,50 @@ function resetFinalState() {
 
     const oldFinalText = document.querySelector('#finalTextLayer');
     if (oldFinalText) oldFinalText.remove();
+}
+
+function animatePhotoChapter(tl, chapter, options, chapterIndex) {
+    const photos = chapter.photos || [];
+    const chapterStartTime = tl.duration();
+
+    const nextChapter = chapters[chapterIndex + 1];
+    const currentIsPhotograph = chapter.music?.includes('Photograph');
+    const nextIsHappy = nextChapter?.music?.includes('Happy');
+
+    for (let i = 0; i < photos.length; i++) {
+        const src = photos[i];
+        let scene = null;
+
+        tl.call(() => {
+            preloadImage(photos[i + 1]);
+            preloadImage(photos[i + 2]);
+
+            scene = buildPhotoScene();
+
+            const card = createCard(src, 'is-focus');
+
+            animateCardEnter(card, scene, options);
+            animateCardIdle(card, scene, options);
+        });
+
+        tl.to({}, { duration: options.photoDuration });
+
+        tl.call(() => {
+            const activeCard = getActiveFocusCard();
+            sendCardToBackground(activeCard, i, options, scene);
+            removeOldDecorCards(options);
+        });
+
+        tl.to({}, { duration: options.breatheDuration });
+    }
+
+    if (currentIsPhotograph && nextIsHappy) {
+        const fadeStartTime = Math.max(chapterStartTime, tl.duration() - 5);
+
+        tl.call(() => {
+            fadeOutActiveMusic(5);
+        }, null, fadeStartTime);
+    }
 }
 
 function setChapter(chapter) {
@@ -129,8 +358,8 @@ function getChapterOptions() {
         transitionDuration: config.transitionDuration,
         maxDecorPhotos: config.maxDecorPhotos,
         removeDuration: 0.35,
-        moveBackDuration: 0.8,
-        breatheDuration: 0.6,
+        moveBackDuration: 0.6,
+        breatheDuration: 0.4,
     };
 }
 
@@ -150,9 +379,7 @@ function showChapterIntro(tl, chapter) {
             scale: .96,
             zIndex: globalZIndex++,
         })
-        .set('.chapter-line', {
-            scaleX: 0,
-        })
+        .set('.chapter-line', { scaleX: 0 })
         .set('.chapter-stars span', {
             opacity: 0,
             y: 12,
@@ -268,23 +495,49 @@ function showCountdown(tl) {
     });
 }
 
-function sendCardToBackground(card, index, options) {
+function animateCardEnter(card, scene, options) {
+    const enter = scene.enter || ENTER_VARIANTS[0];
+
+    gsap.killTweensOf(card);
+
+    gsap.set(card, {
+        ...enter.from(),
+        zIndex: globalZIndex++,
+    });
+
+    gsap.to(card, {
+        ...enter.to(),
+        duration: options.transitionDuration * randomBetween(.86, 1.18),
+        ease: enter.ease || 'power3.out',
+    });
+}
+
+function animateCardIdle(card, scene, options) {
+    const idle = scene.idle || IDLE_VARIANTS[0];
+
+    gsap.to(card, {
+        ...idle.to(),
+        duration: Math.max(.25, options.photoDuration),
+        ease: 'sine.inOut',
+    });
+}
+
+function sendCardToBackground(card, index, options, scene = null) {
     if (!card) return;
+
+    const park = scene?.park || pickVariant('park', PARK_VARIANTS) || PARK_VARIANTS[0];
+    const pos = positions[index % positions.length];
 
     card.classList.remove('is-focus');
     card.classList.add('is-decor');
 
-    const pos = positions[index % positions.length];
+    gsap.killTweensOf(card);
 
     gsap.to(card, {
-        x: pos.x,
-        y: pos.y,
-        scale: pos.s,
-        rotation: pos.r,
-        opacity: 1,
+        ...park.build(pos),
         zIndex: Math.max(1, globalZIndex - 100),
-        duration: options.moveBackDuration,
-        ease: 'power3.inOut',
+        duration: options.moveBackDuration * (park.durationFactor || 1),
+        ease: park.ease || 'power3.inOut',
     });
 }
 
@@ -295,9 +548,12 @@ function removeOldDecorCards(options) {
 
     const old = decorCards[0];
 
+    gsap.killTweensOf(old);
+
     gsap.to(old, {
         opacity: 0,
         scale: .25,
+        filter: 'blur(10px)',
         duration: options.removeDuration,
         ease: 'power2.in',
         onComplete: () => {
@@ -307,43 +563,11 @@ function removeOldDecorCards(options) {
     });
 }
 
-function animatePhotoChapter(tl, chapter, options) {
-    const photos = chapter.photos || [];
-
-    for (let i = 0; i < photos.length; i++) {
-        const src = photos[i];
-
-        tl.call(() => {
-            preloadImage(photos[i + 1]);
-            preloadImage(photos[i + 2]);
-
-            const card = createCard(src, 'is-focus');
-
-            gsap.set(card, {
-                zIndex: globalZIndex++,
-            });
-
-            gsap.to(card, {
-                opacity: 1,
-                scale: 1,
-                rotation: i % 2 === 0 ? -2 : 2,
-                duration: options.transitionDuration,
-                ease: 'back.out(1.25)',
-            });
-        });
-
-        tl.to({}, { duration: options.photoDuration });
-
-        tl.call(() => {
-            const activeCard = currentCards.find(card => card.classList.contains('is-focus'));
-
-            sendCardToBackground(activeCard, i, options);
-            removeOldDecorCards(options);
-        });
-
-        tl.to({}, { duration: options.breatheDuration });
-    }
+function getActiveFocusCard() {
+    const focusCards = currentCards.filter(card => card.classList.contains('is-focus'));
+    return focusCards[focusCards.length - 1] || null;
 }
+
 
 function createFinalTextLayer() {
     const old = document.querySelector('#finalTextLayer');
@@ -415,6 +639,7 @@ function animateFinalChapter(tl, chapter, options) {
                 scale: pos.s,
                 rotation: pos.r,
                 opacity: 0,
+                filter: 'blur(0px)',
                 zIndex: 20 + index,
             });
 
@@ -439,6 +664,7 @@ function animateFinalChapter(tl, chapter, options) {
             scale: .72,
             rotation: 0,
             opacity: 0,
+            filter: 'blur(12px)',
             zIndex: globalZIndex++,
         });
 
@@ -446,6 +672,7 @@ function animateFinalChapter(tl, chapter, options) {
             opacity: 1,
             scale: .92,
             rotation: 0,
+            filter: 'blur(0px)',
             duration: options.transitionDuration,
             ease: 'back.out(1.25)',
         });
@@ -506,11 +733,11 @@ function animateFinalChapter(tl, chapter, options) {
         duration: config.finalPhotoHoldDuration,
     });
 }
-
 function fadeOutChapterCards(tl) {
     tl.to(currentCards, {
         opacity: 0,
         scale: .25,
+        filter: 'blur(10px)',
         duration: .55,
         stagger: .015,
         ease: 'power2.in',
@@ -518,9 +745,117 @@ function fadeOutChapterCards(tl) {
     }, '+=.25');
 }
 
+/* MUSIQUE */
+let activeMusicAudio = audioA;
+let inactiveMusicAudio = audioB;
+let activeMusicSrc = null;
+
+function resetAudioElement(audio) {
+    if (!audio) return;
+
+    gsap.killTweensOf(audio);
+    audio.pause();
+    audio.currentTime = 0;
+    audio.volume = 0;
+    audio.removeAttribute('src');
+    audio.load();
+}
+
+function stopAllMusic() {
+    resetAudioElement(audioA);
+    resetAudioElement(audioB);
+
+    activeMusicAudio = audioA;
+    inactiveMusicAudio = audioB;
+    activeMusicSrc = null;
+}
+
+async function fadeInMusic(src, duration = 5) {
+    if (!src) return;
+
+    if (activeMusicSrc === src) return;
+
+    const audio = inactiveMusicAudio;
+
+    gsap.killTweensOf(audio);
+
+    audio.src = encodeURI(src);
+    audio.currentTime = 0;
+    audio.volume = 0;
+
+    try {
+        await audio.play();
+    } catch (error) {
+        console.warn('Musique bloquée par le navigateur.', error);
+        return;
+    }
+
+    gsap.to(audio, {
+        volume: musicConfig.volume,
+        duration,
+        ease: 'power2.inOut',
+    });
+
+    activeMusicAudio = audio;
+    inactiveMusicAudio = audio === audioA ? audioB : audioA;
+    activeMusicSrc = src;
+}
+
+function fadeOutActiveMusic(duration = 5) {
+    if (!activeMusicAudio) return;
+
+    const audio = activeMusicAudio;
+
+    gsap.killTweensOf(audio);
+
+    gsap.to(audio, {
+        volume: 0,
+        duration,
+        ease: 'power2.inOut',
+        onComplete: () => {
+            audio.pause();
+            audio.currentTime = 0;
+        },
+    });
+
+    activeMusicSrc = null;
+}
+
+function handleChapterMusic(chapter, chapterIndex, startIndex) {
+    if (!chapter?.music) return;
+
+    const previousChapter = chapters[chapterIndex - 1];
+
+    if (previousChapter?.music === chapter.music) {
+        return;
+    }
+
+    fadeInMusic(
+        chapter.music,
+        chapterIndex === startIndex ? musicConfig.fadeInDuration : 5
+    );
+}
+function pauseMusic() {
+    [audioA, audioB].forEach(audio => {
+        if (!audio || audio.paused) return;
+        audio.pause();
+    });
+}
+
+function resumeMusic() {
+    [audioA, audioB].forEach(audio => {
+        if (!audio || !audio.src) return;
+        audio.play().catch(() => {});
+    });
+}
+
+/* TIMELINE */
+
 function buildTimeline() {
     clearCards();
     resetFinalState();
+    stopAllMusic();
+    resetAnimationHistory();
 
     globalZIndex = 100;
 
@@ -554,12 +889,16 @@ function buildTimeline() {
         const chapter = chapters[c];
         const options = getChapterOptions();
 
+        mainTl.call(() => {
+            handleChapterMusic(chapter, c, startIndex);
+        });
+
         showChapterIntro(mainTl, chapter);
 
         if (chapter.isFinal) {
             animateFinalChapter(mainTl, chapter, options);
         } else {
-            animatePhotoChapter(mainTl, chapter, options);
+            animatePhotoChapter(mainTl, chapter, options, c);
             fadeOutChapterCards(mainTl);
         }
     }
@@ -570,6 +909,12 @@ function setPaused(value) {
 
     if (mainTl) {
         mainTl.paused(isPaused);
+    }
+
+    if (isPaused) {
+        pauseMusic();
+    } else {
+        resumeMusic();
     }
 
     if (togglePlayBtn) {
@@ -591,4 +936,114 @@ restartBtn?.addEventListener('click', () => {
     buildTimeline();
 });
 
-buildTimeline();
+/* PRELOAD PROGRESSIF DES IMAGES */
+
+const imageCache = new Map();
+
+function getAllSlideshowImages() {
+    const allImages = [];
+
+    chapters.forEach(chapter => {
+        if (chapter.mainPhoto) {
+            allImages.push(chapter.mainPhoto);
+        }
+
+        (chapter.photos || []).forEach(photo => {
+            allImages.push(photo);
+        });
+    });
+
+    return [...new Set(allImages.filter(Boolean))];
+}
+
+function preloadOneImage(src) {
+    return new Promise(resolve => {
+        if (!src) return resolve(null);
+
+        const encodedSrc = encodeURI(src);
+
+        if (imageCache.has(encodedSrc)) {
+            return resolve(imageCache.get(encodedSrc));
+        }
+
+        const img = new Image();
+
+        img.onload = async () => {
+            try {
+                if (img.decode) {
+                    await img.decode();
+                }
+            } catch (error) {}
+
+            imageCache.set(encodedSrc, img);
+            resolve(img);
+        };
+
+        img.onerror = () => {
+            console.warn('Image impossible à précharger :', src);
+            resolve(null);
+        };
+
+        img.src = encodedSrc;
+    });
+}
+
+async function preloadImagesProgressively(onProgress) {
+    const images = getAllSlideshowImages();
+
+    if (!images.length) {
+        onProgress?.(100, 0, 0);
+        return;
+    }
+
+    const batchSize = 5;
+    let loaded = 0;
+
+    for (let i = 0; i < images.length; i += batchSize) {
+        const batch = images.slice(i, i + batchSize);
+
+        await Promise.all(
+            batch.map(src => preloadOneImage(src))
+        );
+
+        loaded += batch.length;
+
+        const percent = Math.min(100, Math.round((loaded / images.length) * 100));
+
+        onProgress?.(percent, loaded, images.length);
+
+        await new Promise(resolve => setTimeout(resolve, 25));
+    }
+}
+
+const startScreen = document.querySelector('#startScreen');
+const startBtn = document.querySelector('#startBtn');
+
+gsap.set(startScreen, {
+    opacity: 1,
+});
+
+startBtn?.addEventListener('click', async () => {
+    if (!startBtn || !startScreen) return;
+
+    startBtn.disabled = true;
+
+    const originalText = startBtn.textContent;
+
+    await preloadImagesProgressively((percent, loaded, total) => {
+        startBtn.textContent = `Préparation des souvenirs... ${percent}%`;
+    });
+
+    startBtn.textContent = originalText || 'Commencer';
+
+    gsap.to(startScreen, {
+        opacity: 0,
+        scale: 1.03,
+        duration: 1,
+        ease: 'power3.inOut',
+        onComplete: () => {
+            startScreen.remove();
+            buildTimeline();
+        },
+    });
+});

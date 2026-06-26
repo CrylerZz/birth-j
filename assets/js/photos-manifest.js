@@ -83,7 +83,8 @@ window.CHAPTERS = [
       "photos/5 ans/PA260024.JPG"
     ],
     "isFinal": false,
-    "mainPhoto": null
+    "mainPhoto": null,
+    "music": "music/photograph.mp3"
   },
   {
     "title": "Apprentissage des bêtises",
@@ -135,7 +136,8 @@ window.CHAPTERS = [
       "photos/12 ans/SDKL5043.JPEG"
     ],
     "isFinal": false,
-    "mainPhoto": null
+    "mainPhoto": null,
+    "music": "music/photograph.mp3"
   },
   {
     "title": "Ado détectée, prudence recommandée",
@@ -283,7 +285,8 @@ window.CHAPTERS = [
       "photos/18 ans/IMG-20260519-WA0002.jpg"
     ],
     "isFinal": false,
-    "mainPhoto": null
+    "mainPhoto": null,
+    "music": "music/happy.mp3"
   },
   {
     "title": "Le bisou de l’équipe officielle",
@@ -296,6 +299,7 @@ window.CHAPTERS = [
       "photos/final/5.jpg"
     ],
     "isFinal": true,
-    "mainPhoto": "photos/final/main.jpg"
+    "mainPhoto": "photos/final/main.jpg",
+    "music": "music/final.mp3"
   }
 ];
