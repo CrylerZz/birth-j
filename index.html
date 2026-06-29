@@ -124,11 +124,48 @@
 
 </main>
 
-<audio id="musicA" preload="auto"></audio>
-<audio id="musicB" preload="auto"></audio>
+<audio id="music" src="music/photography-happy.mp3" preload="auto"></audio>
 
 <script src="assets/js/photos-manifest.js"></script>
 <script src="script.js"></script>
+<div id="timer" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999999;
+    background: rgba(0,0,0,.75);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font: bold 20px monospace;
+">
+    00:00
+</div>
 
+<script>
+    const timer = document.getElementById('timer');
+
+    let timerInterval = null;
+
+    function startTimer() {
+        const start = Date.now();
+
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - start) / 1000);
+
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+
+            timer.textContent =
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }, 100);
+    }
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+        if (!timerInterval) {
+            startTimer();
+        }
+    });
+</script>
 </body>
 </html>

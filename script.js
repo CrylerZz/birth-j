@@ -23,28 +23,12 @@ const togglePlayBtn = document.querySelector('#togglePlayBtn');
 const restartBtn = document.querySelector('#restartBtn');
 const stage = document.querySelector('#stage');
 
-const audioA = document.querySelector('#musicA');
-const audioB = document.querySelector('#musicB');
-
-let currentAudio = audioA;
-let nextAudio = audioB;
-let currentMusicIndex = 0;
-let isMusicMixing = false;
+const music = document.querySelector('#music');
 
 const musicConfig = {
     volume: 0.48,
     fadeInDuration: 4,
-    crossFadeDuration: 8,
-    mixBeforeEnd: 10,
 };
-
-const musicPlaylist = [
-    ...new Set(
-        chapters
-            .map(chapter => chapter.music)
-            .filter(Boolean)
-    )
-];
 
 let mainTl = null;
 let isPaused = false;
@@ -282,13 +266,8 @@ function resetFinalState() {
     if (oldFinalText) oldFinalText.remove();
 }
 
-function animatePhotoChapter(tl, chapter, options, chapterIndex) {
+function animatePhotoChapter(tl, chapter, options) {
     const photos = chapter.photos || [];
-    const chapterStartTime = tl.duration();
-
-    const nextChapter = chapters[chapterIndex + 1];
-    const currentIsPhotograph = chapter.music?.includes('Photograph');
-    const nextIsHappy = nextChapter?.music?.includes('Happy');
 
     for (let i = 0; i < photos.length; i++) {
         const src = photos[i];
@@ -315,14 +294,6 @@ function animatePhotoChapter(tl, chapter, options, chapterIndex) {
         });
 
         tl.to({}, { duration: options.breatheDuration });
-    }
-
-    if (currentIsPhotograph && nextIsHappy) {
-        const fadeStartTime = Math.max(chapterStartTime, tl.duration() - 5);
-
-        tl.call(() => {
-            fadeOutActiveMusic(5);
-        }, null, fadeStartTime);
     }
 }
 
@@ -568,7 +539,6 @@ function getActiveFocusCard() {
     return focusCards[focusCards.length - 1] || null;
 }
 
-
 function createFinalTextLayer() {
     const old = document.querySelector('#finalTextLayer');
     if (old) old.remove();
@@ -733,6 +703,7 @@ function animateFinalChapter(tl, chapter, options) {
         duration: config.finalPhotoHoldDuration,
     });
 }
+
 function fadeOutChapterCards(tl) {
     tl.to(currentCards, {
         opacity: 0,
@@ -745,108 +716,48 @@ function fadeOutChapterCards(tl) {
     }, '+=.25');
 }
 
-/* MUSIQUE */
-let activeMusicAudio = audioA;
-let inactiveMusicAudio = audioB;
-let activeMusicSrc = null;
+/* MUSIQUE UNIQUE */
 
-function resetAudioElement(audio) {
-    if (!audio) return;
+function resetMusic() {
+    if (!music) return;
 
-    gsap.killTweensOf(audio);
-    audio.pause();
-    audio.currentTime = 0;
-    audio.volume = 0;
-    audio.removeAttribute('src');
-    audio.load();
+    gsap.killTweensOf(music);
+
+    music.pause();
+    music.currentTime = 0;
+    music.volume = 0;
 }
 
-function stopAllMusic() {
-    resetAudioElement(audioA);
-    resetAudioElement(audioB);
+async function startMusic() {
+    if (!music) return;
 
-    activeMusicAudio = audioA;
-    inactiveMusicAudio = audioB;
-    activeMusicSrc = null;
-}
+    gsap.killTweensOf(music);
 
-async function fadeInMusic(src, duration = 5) {
-    if (!src) return;
-
-    if (activeMusicSrc === src) return;
-
-    const audio = inactiveMusicAudio;
-
-    gsap.killTweensOf(audio);
-
-    audio.src = encodeURI(src);
-    audio.currentTime = 0;
-    audio.volume = 0;
+    music.currentTime = 0;
+    music.volume = 0;
 
     try {
-        await audio.play();
+        await music.play();
     } catch (error) {
         console.warn('Musique bloquée par le navigateur.', error);
         return;
     }
 
-    gsap.to(audio, {
+    gsap.to(music, {
         volume: musicConfig.volume,
-        duration,
+        duration: musicConfig.fadeInDuration,
         ease: 'power2.inOut',
     });
-
-    activeMusicAudio = audio;
-    inactiveMusicAudio = audio === audioA ? audioB : audioA;
-    activeMusicSrc = src;
 }
 
-function fadeOutActiveMusic(duration = 5) {
-    if (!activeMusicAudio) return;
-
-    const audio = activeMusicAudio;
-
-    gsap.killTweensOf(audio);
-
-    gsap.to(audio, {
-        volume: 0,
-        duration,
-        ease: 'power2.inOut',
-        onComplete: () => {
-            audio.pause();
-            audio.currentTime = 0;
-        },
-    });
-
-    activeMusicSrc = null;
-}
-
-function handleChapterMusic(chapter, chapterIndex, startIndex) {
-    if (!chapter?.music) return;
-
-    const previousChapter = chapters[chapterIndex - 1];
-
-    if (previousChapter?.music === chapter.music) {
-        return;
-    }
-
-    fadeInMusic(
-        chapter.music,
-        chapterIndex === startIndex ? musicConfig.fadeInDuration : 5
-    );
-}
 function pauseMusic() {
-    [audioA, audioB].forEach(audio => {
-        if (!audio || audio.paused) return;
-        audio.pause();
-    });
+    if (!music || music.paused) return;
+    music.pause();
 }
 
 function resumeMusic() {
-    [audioA, audioB].forEach(audio => {
-        if (!audio || !audio.src) return;
-        audio.play().catch(() => {});
-    });
+    if (!music) return;
+    music.play().catch(() => {});
 }
 
 /* TIMELINE */
@@ -854,7 +765,7 @@ function resumeMusic() {
 function buildTimeline() {
     clearCards();
     resetFinalState();
-    stopAllMusic();
+    resetMusic();
     resetAnimationHistory();
 
     globalZIndex = 100;
@@ -883,22 +794,22 @@ function buildTimeline() {
         showCountdown(mainTl);
     }
 
+    mainTl.call(() => {
+        startMusic();
+    });
+
     const startIndex = getStartIndex();
 
     for (let c = startIndex; c < chapters.length; c++) {
         const chapter = chapters[c];
         const options = getChapterOptions();
 
-        mainTl.call(() => {
-            handleChapterMusic(chapter, c, startIndex);
-        });
-
         showChapterIntro(mainTl, chapter);
 
         if (chapter.isFinal) {
             animateFinalChapter(mainTl, chapter, options);
         } else {
-            animatePhotoChapter(mainTl, chapter, options, c);
+            animatePhotoChapter(mainTl, chapter, options);
             fadeOutChapterCards(mainTl);
         }
     }
@@ -1030,7 +941,7 @@ startBtn?.addEventListener('click', async () => {
 
     const originalText = startBtn.textContent;
 
-    await preloadImagesProgressively((percent, loaded, total) => {
+    await preloadImagesProgressively((percent) => {
         startBtn.textContent = `Préparation des souvenirs... ${percent}%`;
     });
 
